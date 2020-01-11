@@ -1,0 +1,16 @@
+<package>
+  <name>arm_bringup</name>
+  <version>0.3.3</version>
+  <description>Package for launcing the arbotix driver side in conjuction with the servo controlers</description>
+  <author>Michael Ferguson</author>
+  <author>Helen Oleynikova</author>
+  <author>Melonee Wise</author>
+  <maintainer email="jsantossimon@gmail.com">Jorge Santos</maintainer>
+  <license>BSD</license>
+  
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <run_depend>arbotix_python</run_depend>
+  <run_depend>arbotix_controllers</run_depend>
+</package>

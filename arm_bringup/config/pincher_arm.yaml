@@ -1,0 +1,15 @@
+source: pincher_arm.yaml
+port: /dev/ttyUSB0
+read_rate: 15
+write_rate: 25
+joints: {
+    shoulder_yaw_joint: {id: 1, type: dynamixel},
+    shoulder_pitch_joint: {id: 2, type: dynamixel},
+    elbow_pitch_joint: {id: 5, type: dynamixel},
+    wrist_pitch_joint: {id: 6, type: dynamixel},
+    #wrist_roll_joint: {id: 7, type: dynamixel},
+    gripper_revolute_joint: {id: 8, type: prismatic, radius: .0078, connector: .024, offset: .016}
+}
+controllers: {
+    arm_controller: {type: follow_controller, joints: [shoulder_yaw_joint, shoulder_pitch_joint, elbow_pitch_joint, wrist_pitch_joint], action_name: arm_controller/follow_joint_trajectory, onboard: False }
+}

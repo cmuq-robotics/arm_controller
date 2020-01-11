@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: arm_description
+    relative_path: robots/phantomx_reactor_arm_wrist.urdf.xacro
+    xacro_args: "--inorder "
+  SRDF:
+    relative_path: config/phantomx_reactor_arm.srdf
+  CONFIG:
+    author_name: Marijn
+    author_email: marijn.stam@hva.nl
+    generated_timestamp: 1578665807
