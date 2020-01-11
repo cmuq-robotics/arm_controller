@@ -41,7 +41,7 @@
 			<visual>
 			  <origin xyz="0 0 0" rpy="0 0 0" />
 			  <geometry>
-				<mesh filename="package://phantomx_reactor_arm_description/meshes/base_link.STL" />
+				<mesh filename="package://arm_description/meshes/base_link.STL" />
 			  </geometry>
 			  <material name="">
 				<color rgba="0.25098 0.25098 0.25098 1" />
@@ -50,7 +50,7 @@
 			<collision>
 			  <origin xyz="0 0 0" rpy="0 0 0" />
 			  <geometry>
-				<mesh filename="package://phantomx_reactor_arm_description/meshes/base_link_hull.STL" />
+				<mesh filename="package://arm_description/meshes/base_link_hull.STL" />
 			  </geometry>
 			</collision>
 		</link>
@@ -73,7 +73,7 @@
 			<visual>
 			  <origin xyz="0 0 0" rpy="0 0 0" />
 			  <geometry>
-				<mesh   filename="package://phantomx_reactor_arm_description/meshes/shoulder_link.STL" />
+				<mesh   filename="package://arm_description/meshes/shoulder_link.STL" />
 			  </geometry>
 			  <material
 				name="">
@@ -83,7 +83,7 @@
 			<collision>
 			  <origin xyz="0 0 0" rpy="0 0 0" />
 			  <geometry>
-				<mesh   filename="package://phantomx_reactor_arm_description/meshes/shoulder_link_hull.STL" />
+				<mesh   filename="package://arm_description/meshes/shoulder_link_hull.STL" />
 			  </geometry>
 			</collision>
 		</link>
@@ -107,7 +107,7 @@
 			<visual>
 			  <origin xyz="0 0 0" rpy="-${PI/2} 0 -${PI/2}" />
 			  <geometry>
-				<mesh filename="package://phantomx_reactor_arm_description/meshes/bicep_link.STL" />
+				<mesh filename="package://arm_description/meshes/bicep_link.STL" />
 			  </geometry>
 			  <material name="">
 				<color rgba="0.25098 0.25098 0.25098 1" />
@@ -116,7 +116,7 @@
 			<collision>
 			  <origin xyz="0 0 0" rpy="-${PI/2} 0 -${PI/2}" />
 			  <geometry>
-				<mesh filename="package://phantomx_reactor_arm_description/meshes/bicep_link_hull.STL" />
+				<mesh filename="package://arm_description/meshes/bicep_link_hull.STL" />
 			  </geometry>
 			</collision>
 		</link>
@@ -140,7 +140,7 @@
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0" />
 				<geometry> 
-					<mesh filename="package://phantomx_reactor_arm_description/meshes/forearm_link.STL" />
+					<mesh filename="package://arm_description/meshes/forearm_link.STL" />
 				</geometry>
 				<material name=""> 
 					<color rgba="0.25098 0.25098 0.25098 1" />
@@ -149,7 +149,7 @@
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0" />
 				<geometry> 
-					<mesh filename="package://phantomx_reactor_arm_description/meshes/forearm_link_hull.STL" />
+					<mesh filename="package://arm_description/meshes/forearm_link_hull.STL" />
 				</geometry>
 			</collision>
 		</link>
@@ -173,7 +173,7 @@
 			<visual>   
 				<origin xyz="0 0 0" rpy="0 0 0" />   
 				<geometry> 
-					<mesh filename="package://phantomx_reactor_arm_description/meshes/wrist_1.STL" />
+					<mesh filename="package://arm_description/meshes/wrist_1.STL" />
 				</geometry>   
 				<material name="">
 					<color rgba="0.25098 0.25098 0.25098 1" />   
@@ -182,7 +182,7 @@
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0" />
 				<geometry> 
-					<mesh filename="package://phantomx_reactor_arm_description/meshes/wrist_1_hull.STL" />
+					<mesh filename="package://arm_description/meshes/wrist_1_hull.STL" />
 				</geometry>
 			</collision>
 		</link> 
@@ -206,7 +206,7 @@
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0" />
 				<geometry> 
-					<mesh filename="package://phantomx_reactor_arm_description/meshes/wrist_2.STL" />
+					<mesh filename="package://arm_description/meshes/wrist_2.STL" />
 				</geometry>
 				<material name=""> 
 					<color rgba="0.25098 0.25098 0.25098 1" />
@@ -215,7 +215,7 @@
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0" />
 				<geometry> 
-					<mesh filename="package://phantomx_reactor_arm_description/meshes/wrist_2_hull.STL" />
+					<mesh filename="package://arm_description/meshes/wrist_2_hull.STL" />
 				</geometry>
 			</collision>
 		</link>
@@ -238,7 +238,7 @@
 			<visual>   
 				<origin xyz="0 0 0" rpy="1.57 3.14 1.57" />   
 				<geometry> 
-					<mesh filename="package://phantomx_reactor_arm_description/meshes/Guide_Rail_Fixed_Centered.stl" scale="0.01 0.01 0.01" />
+					<mesh filename="package://arm_description/meshes/Guide_Rail_Fixed_Centered.stl" scale="0.01 0.01 0.01" />
 				</geometry>
 				<material name=""> 
 					<color rgba="0.25098 0.25098 0.25098 1" />
@@ -247,7 +247,7 @@
 			<collision>
 				<origin xyz="0 0 0" rpy="1.57 3.14 1.57" />
 				<geometry> 
-					<mesh filename="package://phantomx_reactor_arm_description/meshes/Guide_Rail_Fixed_Centered.stl" scale="0.01 0.01 0.01" /> 
+					<mesh filename="package://arm_description/meshes/Guide_Rail_Fixed_Centered.stl" scale="0.01 0.01 0.01" /> 
 				</geometry>
 			</collision> 
 		</link> 
@@ -273,7 +273,7 @@
 			<visual>  
 				<origin xyz="0 0.010 0" rpy="-1.57 -1.57 0" />   
 				<geometry> 
-					<mesh filename="package://phantomx_reactor_arm_description/meshes/Gripper_Hand_Fixed_Centered.stl" scale="0.01 0.01 0.01" />   
+					<mesh filename="package://arm_description/meshes/Gripper_Hand_Fixed_Centered.stl" scale="0.01 0.01 0.01" />   
 				</geometry>  
 				<material name=""> 
 					<color rgba="0.25098 0.25098 0.25098 1" />   
@@ -282,7 +282,7 @@
 			<collision>   
 				<origin xyz="0 0.010 0" rpy="-1.57 -1.57 0" />   
 				<geometry> 
-					<mesh filename="package://phantomx_reactor_arm_description/meshes/Gripper_Hand_Fixed_Centered.stl" scale="0.01 0.01 0.01" />   
+					<mesh filename="package://arm_description/meshes/Gripper_Hand_Fixed_Centered.stl" scale="0.01 0.01 0.01" />   
 				</geometry> 
 			</collision> 
 		</link>
@@ -299,7 +299,7 @@
 			<visual>   
 				<origin xyz="0 -0.010 0" rpy="1.57 1.57 0" />   
 				<geometry> 
-					<mesh filename="package://phantomx_reactor_arm_description/meshes/Gripper_Hand_Fixed_Centered.stl" scale="0.01 0.01 0.01" />   
+					<mesh filename="package://arm_description/meshes/Gripper_Hand_Fixed_Centered.stl" scale="0.01 0.01 0.01" />   
 				</geometry>  
 				<material name=""> 
 					<color rgba="0.25098 0.25098 0.25098 1" />   
@@ -308,7 +308,7 @@
 			<collision>   
 				<origin xyz="0 -0.010 0" rpy="1.57 1.57 0" />   
 				<geometry> 
-					<mesh filename="package://phantomx_reactor_arm_description/meshes/Gripper_Hand_Fixed_Centered.stl" scale="0.01 0.01 0.01" />   
+					<mesh filename="package://arm_description/meshes/Gripper_Hand_Fixed_Centered.stl" scale="0.01 0.01 0.01" />   
 				</geometry> 
 			</collision> 
 		</link> 

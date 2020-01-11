@@ -10,28 +10,31 @@
     <!--CHAINS: When a chain is specified, all the links along the chain (including endpoints) are included in the group. Additionally, all the joints that are parents to included links are also included. This means that joints along the chain and the parent joint of the base link are included in the group-->
     <!--SUBGROUPS: Groups can also be formed by referencing to already defined group names-->
     <group name="arm">
+        <link name="shoulder_link" />
+        <link name="bicep_link" />
+        <link name="forearm_link" />
+        <link name="wrist_1_link" />
+        <link name="wrist_2_link" />
         <joint name="shoulder_yaw_joint" />
         <joint name="shoulder_pitch_joint" />
         <joint name="elbow_pitch_joint" />
         <joint name="wrist_pitch_joint" />
         <joint name="wrist_roll_joint" />
         <joint name="gripper_guide_joint" />
+        <chain base_link="shoulder_link" tip_link="wrist_2_link"/>
     </group>
     <group name="gripper">
         <link name="gripper_left_link" />
         <link name="gripper_right_link" />
-    </group>
-    <group name="eef">
-        <joint name="gripper_guide_joint" />
+        <joint name="gripper_revolute_joint" />
     </group>
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
     <end_effector name="eef_gripper" parent_link="gripper_guide_link" group="gripper" />
     <!--VIRTUAL JOINT: Purpose: this element defines a virtual joint between a robot link and an external frame of reference (considered fixed with respect to the robot)-->
     <virtual_joint name="virtual_joint" type="fixed" parent_frame="world" child_link="base_footprint" />
     <!--PASSIVE JOINT: Purpose: this element is used to mark joints that are not actuated-->
+    <passive_joint name="gripper_left_joint" />
     <passive_joint name="gripper_right_joint" />
-    <passive_joint name="gripper_revolute_joint" />
-    <passive_joint name="wrist_roll_joint" />
     <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
     <disable_collisions link1="base_footprint" link2="base_link" reason="Adjacent" />
     <disable_collisions link1="base_footprint" link2="bicep_link" reason="Never" />

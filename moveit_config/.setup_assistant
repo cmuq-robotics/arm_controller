@@ -8,4 +8,4 @@ moveit_setup_assistant_config:
   CONFIG:
     author_name: Marijn
     author_email: marijn.stam@hva.nl
-    generated_timestamp: 1578665807
+    generated_timestamp: 1578757519

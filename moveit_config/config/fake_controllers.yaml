@@ -5,6 +5,7 @@ controller_list:
       - shoulder_pitch_joint
       - elbow_pitch_joint
       - wrist_pitch_joint
+      - wrist_roll_joint
   - name: fake_gripper_controller
     joints:
-      []
+      - gripper_revolute_joint
