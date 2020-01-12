@@ -14,6 +14,7 @@ hardware_interface:
     - elbow_pitch_joint
     - wrist_pitch_joint
     - wrist_roll_joint
+    - gripper_revolute_joint
   sim_control_mode: 1  # 0: position, 1: velocity
 # Publish all joint states
 # Creates the /joint_states topic necessary in ROS
@@ -31,9 +32,3 @@ controller_list:
       - elbow_pitch_joint
       - wrist_pitch_joint
       - wrist_roll_joint
-  - name: gripper_controller
-    action_ns: gripper_action
-    default: True
-    type: GripperCommand
-    joints:
-      - gripper_revolute_joint
