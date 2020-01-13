@@ -18,9 +18,9 @@
   </include>
 
   <!-- Run Rviz and load the default config to see the state of the move_group node -->
-  <include file="$(find moveit_config)/launch/moveit_rviz.launch">
+<!--   <include file="$(find moveit_config)/launch/moveit_rviz.launch">
     <arg name="config" value="true"/>
-  </include>
+  </include> -->
 
 <!--   <node name="arm_interface" pkg="arm_interface" type="ArmMain" respawn="false" output="screen"/> -->
 

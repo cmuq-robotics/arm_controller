@@ -101,13 +101,15 @@ int main(int argc, char** argv)
   const robot_state::JointModelGroup* joint_model_group = robot_state->getJointModelGroup(PLANNING_GROUP);
   moveit::planning_interface::PlanningSceneInterface planning_scene_interface;
 
+  const std::vector<std::string>& joint_names = joint_model_group->getVariableNames();
+  std::vector<double> joint_values;
   std::cout << "EEF Name: " << joint_model_group->getEndEffectorName() << std::endl;
 
   // const robot_state::JointModelGroup* joint_model_group =
   //    move_group.getCurrentState()->getJointModelGroup("arm");
 
   // joint_model_group->printGroupInfo();
-  move_group.setNumPlanningAttempts(10);
+  // move_group.setNumPlanningAttempts(10);
 
 
   ROS_INFO_NAMED("tutorial", "Reference frame: %s", move_group.getPlanningFrame().c_str());
@@ -146,35 +148,46 @@ int main(int argc, char** argv)
   // Start the demo
   // ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-  move_group.getPlanningFrame();
+  move_group.setStartStateToCurrentState();
   moveit::planning_interface::MoveGroupInterface::Plan plan;
 
   geometry_msgs::Pose target_pose1;
 
-  target_pose1.position.x = -0.0237;
-  target_pose1.position.y = 0.0897;
-  target_pose1.position.z = 0.3766;
-  target_pose1.orientation.w = 1;
-  // target_pose1.orientation.x = exact_orientation.x;
-  // target_pose1.orientation.y = exact_orientation.y;
-  // target_pose1.orientation.z = exact_orientation.z;
+  target_pose1.position.x = -0.0303377;
+  target_pose1.position.y = 0.0020603;
+  target_pose1.position.z = 0.266744;
+  target_pose1.orientation.w = 0.5911;
+  target_pose1.orientation.x = -0.00412;
+  target_pose1.orientation.y = -0.8065;
+  target_pose1.orientation.z = -0.00302;
 
   move_group.setPoseTarget(target_pose1);
-
-
+  ROS_INFO("Trying IK.....");
+  if(robot_state->setFromIK(joint_model_group, target_pose1)){
+    ROS_INFO("successfully retrieved IK Solution!");
+    robot_state->copyJointGroupPositions(joint_model_group, joint_values);
+    for (std::size_t i = 0; i < joint_names.size(); ++i)
+    {
+      ROS_INFO("Joint %s: %f", joint_names[i].c_str(), joint_values[i]);
+      move_group.setJointValueTarget(joint_values);
+    }
+  }
+  else{
+    ROS_ERROR("CANNOT SOLVE IK");
+  }
   bool success = (move_group.plan(plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
-  ROS_INFO("Visualizing plan 2 (joint space goal) %s",success?"":"FAILED");
+  // ROS_INFO("Visualizing plan 2 (joint space goal) %s",success?"":"FAILED");
 
-  // // Now, we call the planner to compute the plan and visualize it.
-  // // Note that we are just planning, not asking move_group
-  // // to actually move the robot.
-  // 
+  // // // Now, we call the planner to compute the plan and visualize it.
+  // // // Note that we are just planning, not asking move_group
+  // // // to actually move the robot.
+  // // 
 
-  // bool success = (move_group.plan(plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+  // // bool success = (move_group.plan(plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
 
-  // ROS_INFO_NAMED("tutorial", "Visualizing plan 1 (pose goal) %s", success ? "" : "FAILED");
-  // sleep(5);
-  // move_group.execute(plan);
+  // // ROS_INFO_NAMED("tutorial", "Visualizing plan 1 (pose goal) %s", success ? "" : "FAILED");
+  sleep(5);
+  move_group.execute(plan);
 
   return 0;
 }

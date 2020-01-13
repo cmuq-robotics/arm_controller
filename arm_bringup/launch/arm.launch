@@ -5,9 +5,6 @@
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/> 
   <node name="fake_joint_pub" pkg="arm_bringup" type="fake_joint_pub.py"/>
 
-<!--
-  <node name="fake_joint_pub" pkg="arm_bringup" type="fake_joint_pub.py"/>
--->
   <node name="arbotix" pkg="arbotix_python" type="arbotix_driver" output="screen">
     <rosparam file="$(find arm_bringup)/config/pincher_arm.yaml" command="load"/>
     <param name="sim" value="false"/>
