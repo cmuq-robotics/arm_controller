@@ -110,7 +110,13 @@ int main(int argc, char** argv)
 
   // joint_model_group->printGroupInfo();
   // move_group.setNumPlanningAttempts(10);
-
+  // const double* elbow_pos = robot_state->getJointPositions("elbow_pitch_joint");
+  // std::cout << "JOINT POS OF ELBOW PITCH: " << &elbow_pos << std::endl;
+  // robot_state->copyJointGroupPositions(joint_model_group, joint_values);
+  // for (std::size_t i = 0; i < joint_names.size(); ++i)
+  // {
+  //   ROS_INFO("Joint %s: %f", joint_names[i].c_str(), joint_values[i]);
+  // }
 
   ROS_INFO_NAMED("tutorial", "Reference frame: %s", move_group.getPlanningFrame().c_str());
 
@@ -119,20 +125,9 @@ int main(int argc, char** argv)
   // ROS_INFO_NAMED("tutorial", "End effector link: %s", joint_model_group->getEndEffectorName().c_str());
 
 
-  geometry_msgs::PoseStamped robot_pose;
-  robot_pose = move_group.getCurrentPose();
 
-
-
-  geometry_msgs::Pose current_position;
-  current_position = robot_pose.pose;
 
   /*Retrive position and orientation */
-  geometry_msgs::Point exact_pose; 
-  geometry_msgs::Quaternion exact_orientation; 
-  exact_pose = current_position.position;
-  exact_orientation = current_position.orientation;
-
   // while(1){
   //   robot_pose = move_group.getCurrentPose();
   //   current_position = robot_pose.pose;
@@ -148,20 +143,19 @@ int main(int argc, char** argv)
   // Start the demo
   // ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-  move_group.setStartStateToCurrentState();
   moveit::planning_interface::MoveGroupInterface::Plan plan;
 
   geometry_msgs::Pose target_pose1;
 
-  target_pose1.position.x = -0.0303377;
-  target_pose1.position.y = 0.0020603;
-  target_pose1.position.z = 0.266744;
-  target_pose1.orientation.w = 0.5911;
-  target_pose1.orientation.x = -0.00412;
-  target_pose1.orientation.y = -0.8065;
-  target_pose1.orientation.z = -0.00302;
+  target_pose1.position.x = -0.0243677;
+  target_pose1.position.y = 0.004259;
+  target_pose1.position.z = 0.520873;
 
-  move_group.setPoseTarget(target_pose1);
+  // target_pose1.orientation.x = -0.00;
+  // target_pose1.orientation.y = -0.8065;
+  // target_pose1.orientation.z = -0.00302;
+  target_pose1.orientation.w = 1;
+
   ROS_INFO("Trying IK.....");
   if(robot_state->setFromIK(joint_model_group, target_pose1)){
     ROS_INFO("successfully retrieved IK Solution!");
@@ -186,7 +180,7 @@ int main(int argc, char** argv)
   // // bool success = (move_group.plan(plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
 
   // // ROS_INFO_NAMED("tutorial", "Visualizing plan 1 (pose goal) %s", success ? "" : "FAILED");
-  sleep(5);
+  sleep(10);
   move_group.execute(plan);
 
   return 0;

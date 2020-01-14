@@ -7,7 +7,7 @@ rospy.init_node("fake_joint_pub")
 p = rospy.Publisher('joint_states', JointState, queue_size=5)
 
 msg = JointState()
-msg.name = ["gripper_revolute_joint"]
+msg.name = ["gripper_right_joint"]
 msg.position = [0.0 for name in msg.name]
 msg.velocity = [0.0 for name in msg.name]
 

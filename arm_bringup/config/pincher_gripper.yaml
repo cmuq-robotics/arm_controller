@@ -7,4 +7,4 @@ max_opening: 0.031
 neutral: 0.015
 tighten: .001
 center: 0
-joint: gripper_revolute_joint
+joint: gripper_right_joint
