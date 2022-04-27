@@ -8,4 +8,4 @@ controller_list:
       - wrist_roll_joint
   - name: fake_gripper_controller
     joints:
-      - gripper_revolute_joint
+      - gripper_joint

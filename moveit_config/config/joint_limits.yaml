@@ -7,7 +7,7 @@ joint_limits:
     max_velocity: 6.178465545
     has_acceleration_limits: false
     max_acceleration: 0
-  gripper_revolute_joint:
+  gripper_guide_joint:
     has_velocity_limits: true
     max_velocity: 0.5
     has_acceleration_limits: false

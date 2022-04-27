@@ -10,7 +10,8 @@
     <!--CHAINS: When a chain is specified, all the links along the chain (including endpoints) are included in the group. Additionally, all the joints that are parents to included links are also included. This means that joints along the chain and the parent joint of the base link are included in the group-->
     <!--SUBGROUPS: Groups can also be formed by referencing to already defined group names-->
     <group name="arm">
-        <joint name="shoulder_yaw_joint" />
+       <!--<chain base_link="base_link" tip_link="wrist_2_link"/>-->
+       <joint name="shoulder_yaw_joint" />
         <joint name="shoulder_pitch_joint" />
         <joint name="elbow_pitch_joint" />
         <joint name="wrist_pitch_joint" />
@@ -21,6 +22,29 @@
         <link name="gripper_left_link" />
         <link name="gripper_right_link" />
     </group>
+   <group_state name="grip_open" group="gripper">
+        <joint name="gripper_right_joint" value="0.029" />
+    </group_state>
+    <group_state name="grip_closed" group="gripper">
+        <joint name="gripper_right_joint" value="0.005" />
+    </group_state>
+    <group_state name="grip_mid" group="gripper">
+        <joint name="gripper_right_joint" value="0.015" />
+    </group_state>
+    <group_state name="right_up" group="arm">
+        <joint name="elbow_pitch_joint" value="0" />
+        <joint name="shoulder_pitch_joint" value="0" />
+        <joint name="shoulder_yaw_joint" value="0" />
+        <joint name="wrist_pitch_joint" value="0" />
+        <joint name="gripper_guide_joint" value="0" />
+    </group_state>
+    <group_state name="resting" group="arm">
+        <joint name="elbow_pitch_joint" value="0.01" />
+        <joint name="shoulder_pitch_joint" value="0" />
+        <joint name="shoulder_yaw_joint" value="0" />
+        <joint name="wrist_pitch_joint" value="-0.01" />
+        <joint name="gripper_guide_joint" value="0" />
+    </group_state>
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
     <end_effector name="eef_gripper" parent_link="gripper_guide_link" group="gripper" />
     <!--VIRTUAL JOINT: Purpose: this element defines a virtual joint between a robot link and an external frame of reference (considered fixed with respect to the robot)-->

@@ -6,9 +6,13 @@
   <node name="fake_joint_pub" pkg="arm_bringup" type="fake_joint_pub.py"/>
 
   <node name="arbotix" pkg="arbotix_python" type="arbotix_driver" output="screen">
-    <rosparam file="$(find arm_bringup)/config/pincher_arm.yaml" command="load"/>
+    <rosparam file="$(find arm_bringup)/config/pincher_arm.yaml" command="load"/> 
+    <!--<rosparam file="$(find phantomx_reactor_arm_controller)/config/arbotix_config_phantomx_wrist.yaml" command="load" />-->
     <param name="sim" value="false"/>
   </node>
+
+  <!-- This node coordinates the motors with the parallel/mimic joints -->
+  <node name="phantomx_reactor_controller" pkg="arm_bringup" type="phantomx_reactor_parallel_motor_joints.py" output="screen"/>
 
   <node name="gripper_controller" pkg="arbotix_controllers" type="gripper_controller" output="screen">
     <rosparam file="$(find arm_bringup)/config/pincher_gripper.yaml" command="load" />

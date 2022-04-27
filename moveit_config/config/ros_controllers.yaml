@@ -32,3 +32,11 @@ controller_list:
       - elbow_pitch_joint
       - wrist_pitch_joint
       - wrist_roll_joint
+      - gripper_guide_joint
+  - name: gripper_controller
+    action_ns: gripper_action
+    type: GripperCommand
+    default: true
+    command_joint: gripper_right_joint
+    joints:
+      - gripper_right_joint 
