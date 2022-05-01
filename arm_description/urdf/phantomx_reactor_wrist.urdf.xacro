@@ -17,20 +17,20 @@
 	<xacro:property name="wrist_roll_upper_limit" value="${PI}"/>
 	<xacro:property name="wrist_roll_lower_limit" value="-${PI}"/>
 	
-	<xacro:property name="gripper_joint_upper_limit" value="0.0"/>
-	<xacro:property name="gripper_joint_lower_limit" value="0.03"/>
+	<xacro:property name="gripper_joint_upper_limit" value="0.04"/>
+	<xacro:property name="gripper_joint_lower_limit" value="0.0"/>
 	
 	
 	<xacro:macro name="phantomx_reactor_wrist" params="parent prefix *origin">
 		
-	    <!-- ARM BASE JOINT -->
+	  <!-- ARM BASE JOINT -->
 		<joint name="${prefix}base_joint" type="fixed">
 			<insert_block name="origin" />
 			<parent link="${parent}" />
-			<child link="${prefix}base_link" />
+			<child link="arm_base_link" />
 		</joint>
 		
-		<link name="${prefix}base_link">
+		<link name="arm_base_link">
 			<inertial>
 			  <origin xyz="-3.9657E-09 2.0144E-09 0.04262" rpy="0 0 0" />
 			  <mass value="0.33742" />
@@ -59,7 +59,7 @@
 		<joint name="${prefix}shoulder_yaw_joint" type="revolute">
 			<origin xyz="0 0 0.081" rpy="0 0 0" />
 			<!--origin xyz="0 0 0.081" rpy="0 0 0" /-->
-			<parent link="${prefix}base_link" />
+			<parent link="arm_base_link" />
 			<child link="${prefix}shoulder_link" />
 			<axis xyz="0 0 1" />
 			<limit effort="1.5" velocity="6.178465545" lower="${shoulder_yaw_joint_lower_limit}" upper="${shoulder_yaw_joint_upper_limit}" />

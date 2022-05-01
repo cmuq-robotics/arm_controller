@@ -36,7 +36,8 @@
 
 #include <moveit/move_group_interface/move_group_interface.h>
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
-
+#include "arm_interface/pick.h"
+#include "arm_interface/place.h"
 
 #include <moveit_msgs/DisplayTrajectory.h>
 
@@ -49,17 +50,179 @@
 
 
 
+void gotopose( robot_state::RobotStatePtr robot_state,
+	       moveit::planning_interface::MoveGroupInterface &move_group,
+	       const robot_state::JointModelGroup *joint_model_group,
+	       geometry_msgs::Pose &target_pose)
+{
+  ROS_INFO("Go to Pose");
+
+  std::vector<double> joint_values;
+  moveit::planning_interface::MoveGroupInterface::Plan plan;
+    
+  const std::vector<std::string>& joint_names = joint_model_group->getVariableNames();
+  ROS_INFO("Trying IK.....");
+  if(robot_state->setFromIK(joint_model_group, target_pose)){
+    ROS_INFO("successfully retrieved IK Solution!");
+    robot_state->copyJointGroupPositions(joint_model_group, joint_values);
+    for (std::size_t i = 0; i < joint_names.size(); ++i)
+    {
+      ROS_INFO("Joint %s: %f", joint_names[i].c_str(), joint_values[i]);
+      if( joint_names[i] == "wrist_roll_joint")
+	{
+	  joint_values[i] =0;
+	}
+      move_group.setJointValueTarget(joint_values);
+    }
+  }
+  else{
+    ROS_ERROR("CANNOT SOLVE IK");
+  }
+  bool success = (move_group.plan(plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+  ROS_INFO("Visualizing plan 2 (joint space goal) %s",success?"":"FAILED");
+
+  sleep(1);
+  move_group.execute(plan);
+
+}
+
+
+bool set_gripper(std::string conf)
+{
+  ROS_INFO("Setting gripper to %s", conf.c_str());
+  static const std::string PLANNING_GROUP = "gripper";
+  moveit::planning_interface::MoveGroupInterface move_group(PLANNING_GROUP);
+
+  moveit::planning_interface::MoveGroupInterface::Plan plan;
+
+  move_group.setJointValueTarget(move_group.getNamedTargetValues(conf));
+
+
+  bool success = (move_group.plan(plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+  ROS_INFO("Plan computation done  %s",success?"":"FAILED");
+
+  //move_group.execute(plan);
+  move_group.move();
+  sleep(1);
+  ROS_INFO("Gripper conf done");
+  
+}
+
+bool pick(arm_interface::pick::Request  &req,
+	  arm_interface::pick::Request  &response)
+{
+  ROS_INFO("Picking Object");
+  static const std::string PLANNING_GROUP = "arm";
+  geometry_msgs::Pose target_pose = req.target;
+  moveit::planning_interface::MoveGroupInterface move_group(PLANNING_GROUP);
+
+  robot_model_loader::RobotModelLoader robot_model_loader("robot_description");
+  robot_model::RobotModelPtr robot_model = robot_model_loader.getModel();
+  robot_state::RobotStatePtr robot_state(new robot_state::RobotState(robot_model));
+  const robot_state::JointModelGroup* joint_model_group
+    = robot_state->getJointModelGroup(PLANNING_GROUP);
+  moveit::planning_interface::PlanningSceneInterface planning_scene_interface;
+
+  const std::vector<std::string>& joint_names = joint_model_group->getVariableNames();
+  std::vector<double> joint_values;
+  std::cout << "EEF Name: " << joint_model_group->getEndEffectorName() << std::endl;
+
+  moveit::planning_interface::MoveGroupInterface::Plan plan;
+
+  move_group.setJointValueTarget(move_group.getNamedTargetValues("right_up"));
+
+  ROS_INFO("Setting initial arm configuration");
+  bool success = (move_group.plan(plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+  ROS_INFO("Plan computation done  %s",success?"":"FAILED");
+
+  //move_group.execute(plan);
+  move_group.move();
+  sleep(1);
+  ROS_INFO("Pre-grasp configuration");
+  target_pose.position.z += 0.10;
+  gotopose(robot_state, move_group, joint_model_group, target_pose);
+  sleep(1);
+  set_gripper("grip_open");
+  target_pose.position.z -= 0.07;
+  gotopose(robot_state, move_group, joint_model_group, target_pose);
+  sleep(1);
+  set_gripper("grip_closed");
+  sleep(1);
+  move_group.setJointValueTarget(move_group.getNamedTargetValues("right_up"));
+  ROS_INFO("Setting final arm configuration");
+  success &= (move_group.plan(plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+  ROS_INFO("Plan computation done  %s",success?"":"FAILED");
+  move_group.move();
+  sleep(1);
+  ROS_INFO("Grasp done!");
+  return success;
+  
+}
+
+bool place(arm_interface::pick::Request  &req,
+	  arm_interface::pick::Request  &response)
+{
+  ROS_INFO("Placing Object");
+  static const std::string PLANNING_GROUP = "arm";
+  geometry_msgs::Pose target_pose = req.target;
+  moveit::planning_interface::MoveGroupInterface move_group(PLANNING_GROUP);
+
+  robot_model_loader::RobotModelLoader robot_model_loader("robot_description");
+  robot_model::RobotModelPtr robot_model = robot_model_loader.getModel();
+  robot_state::RobotStatePtr robot_state(new robot_state::RobotState(robot_model));
+  const robot_state::JointModelGroup* joint_model_group
+    = robot_state->getJointModelGroup(PLANNING_GROUP);
+  moveit::planning_interface::PlanningSceneInterface planning_scene_interface;
+
+  const std::vector<std::string>& joint_names = joint_model_group->getVariableNames();
+  std::vector<double> joint_values;
+  std::cout << "EEF Name: " << joint_model_group->getEndEffectorName() << std::endl;
+
+  moveit::planning_interface::MoveGroupInterface::Plan plan;
+
+  move_group.setJointValueTarget(move_group.getNamedTargetValues("right_up"));
+
+  ROS_INFO("Setting initial arm configuration");
+  bool success = (move_group.plan(plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+  ROS_INFO("Plan computation done  %s",success?"":"FAILED");
+
+  //move_group.execute(plan);
+  move_group.move();
+  sleep(1);
+  ROS_INFO("Pre-place configuration");
+  target_pose.position.z += 0.10;
+  gotopose(robot_state, move_group, joint_model_group, target_pose);
+  sleep(1);
+  target_pose.position.z -= 0.07;
+  gotopose(robot_state, move_group, joint_model_group, target_pose);
+  sleep(1);
+  set_gripper("grip_open");
+  sleep(1);
+  move_group.setJointValueTarget(move_group.getNamedTargetValues("right_up"));
+  ROS_INFO("Setting final arm configuration");
+  success &= (move_group.plan(plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+  ROS_INFO("Plan computation done  %s",success?"":"FAILED");
+  move_group.move();
+  sleep(1);
+  ROS_INFO("Place done!");
+  return success;
+}
+
 
 int main(int argc, char** argv)
 {
   ros::init(argc, argv, "arm_interface");
   ros::NodeHandle node_handle("~");
-  ros::AsyncSpinner spinner(1);
+  ros::AsyncSpinner spinner(4);
   spinner.start();
   ROS_INFO("Waiting for context to come up");
   sleep(10);
   ROS_INFO("Starting interface...");
 
+  
+  ros::ServiceServer servicepick = node_handle.advertiseService("pick", pick);
+  ros::ServiceServer serviceplace = node_handle.advertiseService("place", place);
+  ROS_INFO("Ready to pick & place objects");
 
   // BEGIN_TUTORIAL
   //
@@ -91,19 +254,7 @@ int main(int argc, char** argv)
   // We can print the name of the reference frame for this robot.
   
 
-  static const std::string PLANNING_GROUP = "arm";
-
-  moveit::planning_interface::MoveGroupInterface move_group(PLANNING_GROUP);
-  robot_model_loader::RobotModelLoader robot_model_loader("robot_description");
-  robot_model::RobotModelPtr robot_model = robot_model_loader.getModel();
-/* Create a RobotState and JointModelGroup to keep track of the current robot pose and planning group*/
-  robot_state::RobotStatePtr robot_state(new robot_state::RobotState(robot_model));
-  const robot_state::JointModelGroup* joint_model_group = robot_state->getJointModelGroup(PLANNING_GROUP);
-  moveit::planning_interface::PlanningSceneInterface planning_scene_interface;
-
-  const std::vector<std::string>& joint_names = joint_model_group->getVariableNames();
-  std::vector<double> joint_values;
-  std::cout << "EEF Name: " << joint_model_group->getEndEffectorName() << std::endl;
+  /*   Create a RobotState and JointModelGroup to keep track of the current robot pose and planning group*/
 
   // const robot_state::JointModelGroup* joint_model_group =
   //    move_group.getCurrentState()->getJointModelGroup("arm");
@@ -118,10 +269,10 @@ int main(int argc, char** argv)
   //   ROS_INFO("Joint %s: %f", joint_names[i].c_str(), joint_values[i]);
   // }
 
-  ROS_INFO_NAMED("tutorial", "Reference frame: %s", move_group.getPlanningFrame().c_str());
+  //ROS_INFO_NAMED("tutorial", "Reference frame: %s", move_group.getPlanningFrame().c_str());
 
   // We can also print the name of the end-effector link for this group.
-  ROS_INFO_NAMED("tutorial", "End effector link: %s", move_group.getEndEffectorLink().c_str());
+  //ROS_INFO_NAMED("tutorial", "End effector link: %s", move_group.getEndEffectorLink().c_str());
   // ROS_INFO_NAMED("tutorial", "End effector link: %s", joint_model_group->getEndEffectorName().c_str());
 
 
@@ -143,45 +294,27 @@ int main(int argc, char** argv)
   // Start the demo
   // ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-  moveit::planning_interface::MoveGroupInterface::Plan plan;
+
+
+
+
 
   geometry_msgs::Pose target_pose1;
 
-  target_pose1.position.x = -0.0243677;
-  target_pose1.position.y = 0.004259;
-  target_pose1.position.z = 0.520873;
+  target_pose1.position.x = 0.25;
+  target_pose1.position.y = 0.0;
+  target_pose1.position.z = 0.05;
 
-  // target_pose1.orientation.x = -0.00;
-  // target_pose1.orientation.y = -0.8065;
-  // target_pose1.orientation.z = -0.00302;
+  target_pose1.orientation.x = 0.0000000;
+  target_pose1.orientation.y = 0.000000;
+  target_pose1.orientation.z = 0.00000;
   target_pose1.orientation.w = 1;
 
-  ROS_INFO("Trying IK.....");
-  if(robot_state->setFromIK(joint_model_group, target_pose1)){
-    ROS_INFO("successfully retrieved IK Solution!");
-    robot_state->copyJointGroupPositions(joint_model_group, joint_values);
-    for (std::size_t i = 0; i < joint_names.size(); ++i)
-    {
-      ROS_INFO("Joint %s: %f", joint_names[i].c_str(), joint_values[i]);
-      move_group.setJointValueTarget(joint_values);
-    }
-  }
-  else{
-    ROS_ERROR("CANNOT SOLVE IK");
-  }
-  bool success = (move_group.plan(plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
-  // ROS_INFO("Visualizing plan 2 (joint space goal) %s",success?"":"FAILED");
+  //  pick(target_pose1);
 
-  // // // Now, we call the planner to compute the plan and visualize it.
-  // // // Note that we are just planning, not asking move_group
-  // // // to actually move the robot.
-  // // 
 
-  // // bool success = (move_group.plan(plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
-
-  // // ROS_INFO_NAMED("tutorial", "Visualizing plan 1 (pose goal) %s", success ? "" : "FAILED");
-  sleep(10);
-  move_group.execute(plan);
+  //  ros::spin();
+  ros::waitForShutdown();
 
   return 0;
 }

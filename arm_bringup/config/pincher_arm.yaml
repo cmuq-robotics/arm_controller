@@ -1,5 +1,5 @@
 source: pincher_arm.yaml
-port: /dev/ttyUSB_REACTOR
+port: /dev/ttyUSB0
 read_rate: 15
 write_rate: 25
 joints: {
@@ -12,6 +12,7 @@ joints: {
     wrist_roll_joint: {id: 7, type: dynamixel},
     #gripper_revolute_joint: {id: 8, max_angle: 0, min_angle: -145, max_speed: 90, type: dynamixel}
     #gripper_revolute_joint: {id: 8, max_speed: 100.0, range: 180, min_angle: -90.0, max_angle: 0}
+    #gripper_right_joint: {id: 8, type: prismatic, radius: .0078, connector: .024, offset: .016}
     gripper_right_joint: {id: 8, type: prismatic, radius: .0078, connector: .024, offset: .016}
 }
 controllers: {

@@ -1,12 +1,14 @@
 <?xml version="1.0"?>
 <launch>
 
+  <include file="$(find arm_bringup)/launch/arm.launch">
+  </include>
 
 
-<!--   
+
   <include file="$(find moveit_config)/launch/planning_context.launch">
     <arg name="load_robot_description" value="true"/>
-  </include> -->
+  </include> 
 
 <!--   <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen"/> -->
   
@@ -21,9 +23,6 @@
 <!--   <include file="$(find moveit_config)/launch/moveit_rviz.launch">
     <arg name="config" value="true"/>
   </include> -->
-
-<!--   <node name="arm_interface" pkg="arm_interface" type="ArmMain" respawn="false" output="screen"/> -->
-
 <node pkg="arm_interface" name="arm_interface" type="arm_interface" output="screen"/>
 
 
